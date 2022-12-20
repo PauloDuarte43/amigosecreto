@@ -29,10 +29,18 @@ def index(request):
                         secret_friend__isnull=False
                     )
 
+                    _fns = [i.secret_friend.id for i in _fns]
+
+                    print(_fns)
+
                     if _fns:
-                        _rnd_friend = Friend.objects.exclude(id=friend.id, id__in=[i.secret_friend.id for i in _fns])
+                        print('alguns amigos')
+                        _rnd_friend = Friend.objects.exclude(id=friend.id).exclude(id__in=_fns)
                     else:
+                        print('qualquer amigo')
                         _rnd_friend = Friend.objects.exclude(id=friend.id)
+
+                    print(_rnd_friend)
 
                     friend.secret_friend = random.choice(_rnd_friend)
 
