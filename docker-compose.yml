@@ -10,8 +10,8 @@ services:
       - POSTGRES_PASSWORD=postgres
   amigosecretoweb:
     build: .
-    command: python manage.py runserver 0.0.0.0:8000
-    #command: uwsgi --http :8000 --ini uwsgi.ini --thunder-lock
+    #command: python manage.py runserver 0.0.0.0:8000
+    command: uwsgi --http :8000 --ini uwsgi.ini --thunder-lock
     ports:
       - "8112:8000"
     volumes:

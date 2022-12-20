@@ -29,23 +29,22 @@ def index(request):
                         secret_friend__isnull=False
                     )
 
-                    _fns = [i.secret_friend.id for i in _fns]
-
-                    print(_fns)
-
                     if _fns:
+                        _fns = [i.secret_friend.id for i in _fns]
+                        print(_fns)
                         print('alguns amigos')
                         _rnd_friend = Friend.objects.exclude(id=friend.id).exclude(id__in=_fns)
                     else:
                         print('qualquer amigo')
                         _rnd_friend = Friend.objects.exclude(id=friend.id)
-
                     print(_rnd_friend)
-
-                    friend.secret_friend = random.choice(_rnd_friend)
-
+                    if _rnd_friend:
+                        _choice = random.choice(_rnd_friend)
+                        if len(_rnd_friend) == 2:
+                            while(_choice.secret_friend):
+                                _choice = random.choice(_rnd_friend)
+                        friend.secret_friend = _choice
                 friend.save()
-
             else:
                 msg = 'Usuário ou senha inválidos!'
         else:
