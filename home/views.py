@@ -8,6 +8,7 @@ from .models import Friend
 
 def index(request):
     msg = ''
+    logged_friend = None
     if request.method == "POST":
         if request.POST.get('username') and request.POST.get('password'):
             username = request.POST['username']
@@ -16,6 +17,7 @@ def index(request):
                     password=request.POST['password'])
 
             if friend:
+                logged_friend = friend
                 if request.POST.get('gift'):
                     friend.desired_gift = request.POST['gift']
 
@@ -47,6 +49,7 @@ def index(request):
     ).order_by('username')
 
     context = {
+        'logged_friend': logged_friend,
         'message': msg,
         'friend_no_secret': friend_no_secret,
         'friend_desired_gift': friend_desired_gift
