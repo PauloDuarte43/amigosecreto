@@ -12,9 +12,12 @@ def index(request):
     if request.method == "POST":
         if request.POST.get('username') and request.POST.get('password'):
             username = request.POST['username']
-            friend = Friend.objects.get(
-                    Q(username=username)|Q(name=username),
-                    password=request.POST['password'])
+            try:
+                friend = Friend.objects.get(
+                        Q(username=username)|Q(name=username),
+                        password=request.POST['password'])
+            except:
+                friend = None
 
             if friend:
                 logged_friend = friend
