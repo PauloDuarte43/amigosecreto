@@ -30,7 +30,7 @@ def index(request):
                     )
 
                     if _fns:
-                        _rnd_friend = Friend.objects.exclude(id=friend.id, id__in=[i.id for i in _fns])
+                        _rnd_friend = Friend.objects.exclude(id=friend.id, id__in=[i.secret_friend.id for i in _fns])
                     else:
                         _rnd_friend = Friend.objects.exclude(id=friend.id)
 
