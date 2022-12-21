@@ -39,10 +39,18 @@ def index(request):
                         _rnd_friend = Friend.objects.exclude(id=friend.id)
                     print(_rnd_friend)
                     if _rnd_friend:
-                        _choice = random.choice(_rnd_friend)
                         if len(_rnd_friend) == 2:
-                            while(_choice.secret_friend):
-                                _choice = random.choice(_rnd_friend)
+                            _choice = _rnd_friend[0]
+                            if Friend.objects.exclude(
+                                    id=friend.id).exclude(
+                                            id__in=_fns).exclude(
+                                                    id=_rnd_friend[0].id)[0].id == _rnd_friend[1].id:
+                                print('Regra troca')
+                                _choice = _rnd_friend[1]
+                        else:
+                            _choice = random.choice(_rnd_friend)
+                        #_choice = random.choice(_rnd_friend)
+
                         friend.secret_friend = _choice
                 friend.save()
             else:

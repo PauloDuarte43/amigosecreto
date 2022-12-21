@@ -5,7 +5,7 @@ from django.db import models
 
 
 def rand_str(): 
-    return ''.join(random.choice(string.ascii_lowercase) for i in range(6))
+    return ''.join(random.choice(string.ascii_lowercase) for i in range(4))
 
 
 class Friend(models.Model):
@@ -16,5 +16,5 @@ class Friend(models.Model):
     secret_friend = models.ForeignKey('Friend', on_delete=models.DO_NOTHING, null=True, blank=True)
 
     def __str__(self):
-        return f'{self.username} - {self.password}'
+        return f'{self.username} - {self.password} - {self.secret_friend is not None}'
 
