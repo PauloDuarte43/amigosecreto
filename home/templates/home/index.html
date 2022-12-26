@@ -23,6 +23,11 @@
 			.nav-link:focus, .nav-link:hover {
 				color: #700000;
 			}
+			.blurry-text {
+				color: red;
+				filter: blur(7px);
+				-webkit-filter: blur(7px);
+			}
 		</style>
 	<script>
 		function successReload() {
@@ -74,11 +79,14 @@
 					<hr/>
 					<div class="row">
 						<div class="col">
-							{% if logged_friend %}
-								<h1>Seu Amigo Secreto É: <span style="color:red">{{ logged_friend.secret_friend.name }}</span></h1>
-								<script>successReload();</script>
-							{% endif %}
-
+							<h1>Seu Amigo Secreto É: 
+								{% if logged_friend %}
+									<span style="color:red">{{ logged_friend.secret_friend.name }}</span>
+									<script>successReload();</script>
+								{% else %}
+									<span class="blurry-text">AmigoSecreto</span>
+								{% endif %}
+							</h1>
 						</div>
 					</div>
 					<hr/>
