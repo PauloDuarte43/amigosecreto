@@ -11,7 +11,18 @@
 				background-color: #faedcd;
 				padding: 15px 15px 0 15px;
 			}
-			.message {color: red;}
+			.message {
+				color: red;
+			}
+			.nav-pills .nav-link.active, .nav-pills .show>.nav-link {
+				background-color: black;
+			}
+			.nav-link {
+				color: black;
+			}
+			.nav-link:focus, .nav-link:hover {
+				color: #700000;
+			}
 		</style>
 	<script>
 		function successReload() {
@@ -22,80 +33,94 @@
 				} else {
 					window.location.pathname = '/';
 				}
-			}, 3000);
+			}, 5000);
 		}
 	</script>
 	</head>
 	<body>
+		<ul class="nav nav-pills" id="myTab" role="tablist">
+			<li class="nav-item" role="presentation">
+				<button class="nav-link active" id="home-tab" data-bs-toggle="pill" data-bs-target="#sortition" type="button" role="tab" aria-controls="sortition" aria-selected="true">Sorteio</button>
+			</li>
+			<li class="nav-item" role="presentation">
+				<button class="nav-link" id="profile-tab" data-bs-toggle="pill" data-bs-target="#giftlist" type="button" role="tab" aria-controls="giftlist" aria-selected="false">Sugestões de Presente</button>
+			</li>
+		</ul>
 		<div class="container-fluid">
-			<div class="row">
-				<div class="col">
-					<h2 class="message">{{ message }}</h2>
-					<form method="post">
-						{% csrf_token %}
-						<div class="form-group">
-							<label for="username">Usuário</label>
-							<input type="text" class="form-control" id="username" name="username" placeholder="Usuário">
+			<div class="tab-content" id="myTabContent">
+				<div class="tab-pane fade show active" id="sortition" role="tabpanel" aria-labelledby="sortition-tab">
+					<div class="row">
+						<div class="col">
+							<h2 class="message">{{ message }}</h2>
+							<form method="post">
+								{% csrf_token %}
+								<div class="form-group">
+									<label for="username">Usuário</label>
+									<input type="text" class="form-control" id="username" name="username" placeholder="Usuário">
+								</div>
+								<div class="form-group">
+									<label for="password">Senha</label>
+									<input type="password" class="form-control" id="password" name="password" placeholder="Senha">
+								</div>
+								<div class="form-group">
+									<label for="gift">Sugestão de Presente</label>
+									<input type="text" class="form-control" id="gift" name="gift" placeholder="Sugestão de Presente">
+								</div>
+								<br/>
+								<button type="submit" class="btn btn-success">Sortear</button>
+							</form>
 						</div>
-						<div class="form-group">
-							<label for="password">Senha</label>
-							<input type="password" class="form-control" id="password" name="password" placeholder="Senha">
-						</div>
-						<div class="form-group">
-							<label for="gift">Sugestão de Presente</label>
-							<input type="text" class="form-control" id="gift" name="gift" placeholder="Sugestão de Presente">
-						</div>
-						<br/>
-						<button type="submit" class="btn btn-primary">Enviar</button>
-					</form>
-				</div>
-			</div>
-			<hr/>
-			<div class="row">
-				<div class="col">
-					{% if logged_friend %}
-						<h1>Seu Amigo Secreto É: <span style="color:red">{{ logged_friend.secret_friend.name }}</span></h1>
-						<script>successReload();</script>
-					{% endif %}
-
-				</div>
-			</div>
-			<hr/>
-			<div class="row">
-				<div class="col">
-
-				{% if friend_no_secret %}
-					<h2>Pessoas que ainda não sortearam seu amigo({{friend_no_secret|length}}):</h2>
-					{% for friend in friend_no_secret %}
-						<!--span>{{ friend.name }}</span>{% if not forloop.last %} - {% endif %}-->
-					{% endfor %}
-				{% endif %}
-				</div>
-			</div>
-			<hr/>
-			<div class="row">
-				<div class="col">
-					<table class="table table-dark">
-						<thead> 
-							<tr>
-								<th scope="col">#</th>
-								<th scope="col">Amigo</th>
-								<th scope="col">Sugestão de presente</th>
-							</tr>
-						</thead>
-						<tbody>
-							{% if friend_desired_gift %}
-								{% for friend in friend_desired_gift %}
-									<tr>
-										<th scope="row">{{ friend.id  }}</th>
-										<td>{{ friend.name }}</td>
-										<td>{{ friend.desired_gift }}</td>
-									</tr>
-								{% endfor %}
+					</div>
+					<hr/>
+					<div class="row">
+						<div class="col">
+							{% if logged_friend %}
+								<h1>Seu Amigo Secreto É: <span style="color:red">{{ logged_friend.secret_friend.name }}</span></h1>
+								<script>successReload();</script>
 							{% endif %}
-						</tbody>
-					</table>
 
+						</div>
+					</div>
+					<hr/>
+					<div class="row">
+						<div class="col">
+
+						{% if friend_no_secret %}
+							<h2>Pessoas que ainda não sortearam seu amigo({{friend_no_secret|length}}):</h2>
+							{% for friend in friend_no_secret %}
+								<!--span>{{ friend.name }}</span>{% if not forloop.last %} - {% endif %}-->
+							{% endfor %}
+						{% endif %}
+						</div>
+					</div>
+				</div>
+				<div class="tab-pane fade" id="giftlist" role="tabpanel" aria-labelledby="giftlist-tab">
+					<div class="row">
+						<div class="col">
+							<h3>List de Sugestão de Presentes</h3>
+							<table class="table table-dark">
+								<thead> 
+									<tr>
+										<th scope="col">#</th>
+										<th scope="col">Amigo</th>
+										<th scope="col">Sugestão de presente</th>
+									</tr>
+								</thead>
+								<tbody>
+									{% if friend_desired_gift %}
+										{% for friend in friend_desired_gift %}
+											<tr>
+												<th scope="row">{{ friend.id  }}</th>
+												<td>{{ friend.name }}</td>
+												<td>{{ friend.desired_gift }}</td>
+											</tr>
+										{% endfor %}
+									{% endif %}
+								</tbody>
+							</table>
+
+						</div>
+					</div>
 				</div>
 			</div>
 		</div>
