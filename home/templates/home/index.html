@@ -47,19 +47,6 @@
 			}
 
 		</style>
-	<script>
-		function successReload() {
-			// window.history.pushState({}, document.title, window.location.pathname);
-			// setTimeout(function() {
-			// console.log('Reload!!!');
-			// 	if (window.location.pathname == '/') {
-			// 		window.location.pathname = '/home/';
-			// 	} else {
-			// 		window.location.pathname = '/';
-			// 	}
-			// }, 5000);
-		}
-	</script>
 	</head>
 	<body>
 		<ul class="nav nav-pills" id="myTab" role="tablist">
@@ -87,25 +74,32 @@
 									<input value="{{password}}" type="password" class="form-control" id="password" name="password" placeholder="Senha">
 								</div>
 								<div class="form-group">
-									<label for="gift">Sugestão de Presente</label>
-									<input type="text" class="form-control" id="gift" name="gift" placeholder="Sugestão de Presente">
+									<label for="gift">O que <strong>você</strong> gostaria de ganhar?</label>
+									<input type="text" class="form-control" id="gift" name="gift" placeholder="Escolha seu presente">
 								</div>
 								<br/>
-								<button type="submit" class="btn btn-success">Ver Amigo / Atualizar Presente</button>
+								<button type="submit" class="btn btn-success">Ver Amigo / Atualizar o <strong>Seu</strong> Presente</button>
 							</form>
 						</div>
 					</div>
 					<hr/>
 					<div class="row">
-						<div class="col">
+						<div class="col" class="hidden-text" id="friend">
 							<h1>Seu Amigo Secreto É: 
 								{% if logged_friend %}
-									<span class="hidden-text" style="color:red">{{ logged_friend.secret_friend.name }}</span>
-									<script>successReload();</script>
+									<span style="color:red">{{ logged_friend.secret_friend.name }}</span>
 								{% else %}
 									<span class="blurry-text">AmigoSecreto</span>
 								{% endif %}
 							</h1>
+						
+							{% if logged_friend and logged_friend.secret_friend and logged_friend.secret_friend.desired_gift %}
+								<h2>Ele gostaria de ganhar:
+									<span style="color:red">{{ logged_friend.secret_friend.desired_gift }}</span>
+								</h2>
+							{% else %}
+								<h2>Ele ainda não contou o que gostaria de ganhar</h2>
+							{% endif %}
 						</div>
 					</div>
 					<hr/>
@@ -156,6 +150,15 @@
 		<script>
 			console.log('{{ username }}');
 			console.log('{{ password }}');
+			const textElement = document.getElementById('friend');
+
+			textElement.addEventListener('click', () => {
+				// Remove a classe temporariamente para reiniciar a animação
+				textElement.classList.remove('hidden-text');
+				// Aguarda uma fração de tempo antes de reatribuir a classe
+				void textElement.offsetWidth; // Força o reflow
+				textElement.classList.add('hidden-text');
+			});
 		</script>
 	</body>
 </html>
