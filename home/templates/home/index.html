@@ -84,10 +84,10 @@
 					</div>
 					<hr/>
 					<div class="row">
-						<div class="col" class="hidden-text" id="friend">
+						<div class="col">
 							<h1>Seu Amigo Secreto É: 
 								{% if logged_friend %}
-									<span style="color:red">{{ logged_friend.secret_friend.name }}</span>
+									<span id="friend" class="hidden-text" style="color:red">{{ logged_friend.secret_friend.name }}</span>
 								{% else %}
 									<span class="blurry-text">AmigoSecreto</span>
 								{% endif %}
@@ -95,7 +95,7 @@
 						
 							{% if logged_friend and logged_friend.secret_friend and logged_friend.secret_friend.desired_gift %}
 								<h2>Ele gostaria de ganhar:
-									<span style="color:red">{{ logged_friend.secret_friend.desired_gift }}</span>
+									<span id="gift" class="hidden-text" style="color:red">{{ logged_friend.secret_friend.desired_gift }}</span>
 								</h2>
 							{% else %}
 								<h2>Ele ainda não contou o que gostaria de ganhar</h2>
@@ -150,7 +150,8 @@
 		<script>
 			console.log('{{ username }}');
 			console.log('{{ password }}');
-			const textElement = document.getElementById('friend');
+			var reset = function (id) {
+			const textElement = document.getElementById(id);
 
 			textElement.addEventListener('click', () => {
 				// Remove a classe temporariamente para reiniciar a animação
@@ -159,6 +160,9 @@
 				void textElement.offsetWidth; // Força o reflow
 				textElement.classList.add('hidden-text');
 			});
+			}
+			reset('friend');
+			reset('gift');
 		</script>
 	</body>
 </html>
